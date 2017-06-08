@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html ng-app="asciiApp">
+
+<head>
+    <title>Discount Ascii Warehouse</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.css">
+    <script src="vendor/jquery/dist/jquery.min.js"></script>
+    <script src="vendor/angular/angular.min.js"></script>
+    <script src="vendor/oboe/angular-oboe.js"></script>
+    <script src="vendor/oboe/oboe-browser.js"></script>
+    <script src="vendor/scroll/scroll.js"></script>
+    <script src="vendor/moment/moment.js"></script>
+    <script src="services/dataservice.js"></script>
+    <script src="services/cartservice.js"></script>
+    <script src="directives/mysrc.js"></script>
+    <script src="data.js"></script>
+</head>
+
+<body class="{{fullpage()}}">
+    <div class="wrapper">
+
+        <div ng-controller="asciiController as asciiCtrl" ng-cloak>
+            <div id="loading" class="loadingcircle" style="display: block;" ng-show="asciiCtrl.isHidden()">
+                <img id="loading-image" class="loadingimage" src="../images/ajax-loader.gif" alt="Loading..." />
+            </div>
+            <header>
+
+                <h1>Discount Ascii Warehouse</h1>
+
+                <p>Here you're sure to find a bargain on some of the finest ascii available to purchase. Be sure to peruse our
+                    selection of ascii faces in an exciting range of sizes and prices.</p>
+
+                <p>But first, a word from our sponsors:</p>
+                <script>
+                    document.write('<img class="ad" src="/ad/?r=' + Math.floor(Math.random() * 1000) + '"/>');
+                </script>
+            </header>
+            <a ng-click="asciiCtrl.showCart()" style="cursor: pointer">
+                <div class="right-align">
+                    <span class="glyphicon glyphicon-shopping-cart "></span>
+                    <p> {{asciiCtrl.cart.cartitems.length}} {{asciiCtrl.cart.cartitems.length
+                        < 2 ? "Item" : "Items"}} -$ {{asciiCtrl.ascii.totalcartvalue()}}</p>
+                </div>
+            </a>
+            <form name="sortOption" class="sortoptions">
+                <label>
+                 <input type="radio" ng-model="asciiCtrl.ascii.sort" value="id">
+                  Id
+                </label>
+                <label>
+                <input type="radio" ng-model="asciiCtrl.ascii.sort" value="size">
+                  Size
+                </label>
+                <label>
+                <input type="radio" ng-model="asciiCtrl.ascii.sort" value="price">
+                  Price
+                </label>
+                <button ng-click="asciiCtrl.sortList()">Sort</button>
+            </form>
+            <section class="products page">
+                <div infinite-scroll="asciiCtrl.loadMore()" infinite-scroll-distance='0'>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Added</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat-start="product in asciiCtrl.ascii.products track by $index" ng-style="{'height': {{product.height}}}">
+                                <td ng-style="{'font-size': {{product.size}}}">
+                                    {{product.face}}</td>
+                                <td>{{product.price}}</td>
+                                <td>{{product.date}}</td>
+                                <td>
+                                    <input ng-model="qty" type="number" min=1 max=25 ng-init="qty=1"></td>
+                                <td><button ng-click="asciiCtrl.addToCart(product, qty)">Add to Cart</button></td>
+                            </tr>
+                            <tr ng-if="(($index+1)%20 == 0 )" ng-repeat-end="">
+                                <td>
+
+                                    <img class="ad" my-src/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <a ng-click="asciiCtrl.showCart()" style="cursor: pointer">
+                <div class="right-align">
+                    <span class="glyphicon glyphicon-shopping-cart "></span>
+                    <p> {{asciiCtrl.cart.cartitems.length}} {{asciiCtrl.cart.cartitems.length
+                        < 2 ? "Item" : "Items"}} -$ {{asciiCtrl.ascii.totalcartvalue()}}</p>
+                </div>
+            </a>
+            <div class="modal fade" id="update-cart" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Your Cart</h4>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="cartitem in asciiCtrl.cart.cartitems">
+                                    <td>{{cartitem.face}}</td>
+                                    <td>{{cartitem.price}}</td>
+                                    <td>{{cartitem.quantity}}</td>
+                                    <td><button class="glyphicon glyphicon-remove" ng-click="asciiCtrl.removeFromCart(cartitem)">Remove</button></td>
+                                </tr>
+                            </tbody>
+                            <tr>
+                                <p>Total Amount: $ {{asciiCtrl.ascii.totalcartvalue()}}</p>
+                            </tr>
+                        </table>
+                        <div class="modal-footer">
+                            <button name="close" type="button" class="btn btn-primary" data-dismiss="modal">Back To Shopping</button>
+                            <button name="checkout" type="button" class="btn btn-success" data-ng-click="asciiCtrl.goToCheckout()">Checkout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="endofstream" ng-show="asciiCtrl.isApiEnd()">
+                <h3>End of product List</h3>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
+</html>

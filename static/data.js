@@ -28,7 +28,8 @@
             }
 
             function _totalCartValue() {
-                return CartService.totalCartValue();
+                var total = vm.cart.cartitems.reduce(function (a,b) { return a + (Number(b.price.substring(1)) * b.quantity); }, 0); 
+                return total;
             }
 
             function _isApiEnd() {

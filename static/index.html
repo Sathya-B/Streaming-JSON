@@ -39,8 +39,7 @@
             <a ng-click="asciiCtrl.showCart()" style="cursor: pointer">
                 <div class="right-align">
                     <span class="glyphicon glyphicon-shopping-cart "></span>
-                    <p> {{asciiCtrl.cart.cartitems.length}} {{asciiCtrl.cart.cartitems.length
-                        < 2 ? "Item" : "Items"}} -$ {{asciiCtrl.ascii.totalcartvalue()}}</p>
+                    <p> {{asciiCtrl.cartMsg()}}</p>
                 </div>
             </a>
             <form name="sortOption" class="sortoptions">
@@ -91,8 +90,7 @@
             <a ng-click="asciiCtrl.showCart()" style="cursor: pointer">
                 <div class="right-align">
                     <span class="glyphicon glyphicon-shopping-cart "></span>
-                    <p> {{asciiCtrl.cart.cartitems.length}} {{asciiCtrl.cart.cartitems.length
-                        < 2 ? "Item" : "Items"}} -$ {{asciiCtrl.ascii.totalcartvalue()}}</p>
+                    <p>  {{asciiCtrl.cartMsg()}}</p>
                 </div>
             </a>
             <div class="modal fade" id="update-cart" role="dialog" aria-labelledby="myModalLabel">

@@ -9,6 +9,7 @@
             vm.ascii = {};
             vm.addToCart = _addToCart;
             vm.ascii.totalcartvalue = _totalCartValue;
+            vm.cartMsg = _cartMsg;
             vm.isApiEnd = _isApiEnd;
             vm.isHidden = _isHidden;
             vm.loadMore = _loadMore;
@@ -29,7 +30,12 @@
 
             function _totalCartValue() {
                 var total = vm.cart.cartitems.reduce(function (a,b) { return a + (Number(b.price.substring(1)) * b.quantity); }, 0); 
-                return total;
+                return total.toFixed(2);
+            }
+
+            function _cartMsg(){
+                var msg = String(vm.cart.cartitems.length) + " " + (vm.cart.cartitems.length < 2 ? "Item" : "Items")  + "-" + String(vm.ascii.totalcartvalue());
+                return msg;
             }
 
             function _isApiEnd() {
